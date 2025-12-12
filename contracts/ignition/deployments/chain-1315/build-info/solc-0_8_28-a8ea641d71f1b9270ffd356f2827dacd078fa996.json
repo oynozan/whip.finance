@@ -1,0 +1,39 @@
+{
+  "_format": "hh3-sol-build-info-1",
+  "id": "solc-0_8_28-a8ea641d71f1b9270ffd356f2827dacd078fa996",
+  "solcVersion": "0.8.28",
+  "solcLongVersion": "0.8.28+commit.7893614a",
+  "userSourceNameMap": {
+    "contracts/Earnings.sol": "project/contracts/Earnings.sol"
+  },
+  "input": {
+    "language": "Solidity",
+    "settings": {
+      "evmVersion": "cancun",
+      "optimizer": {
+        "enabled": true,
+        "runs": 200
+      },
+      "outputSelection": {
+        "*": {
+          "": [
+            "ast"
+          ],
+          "*": [
+            "abi",
+            "evm.bytecode",
+            "evm.deployedBytecode",
+            "evm.methodIdentifiers",
+            "metadata"
+          ]
+        }
+      },
+      "remappings": []
+    },
+    "sources": {
+      "project/contracts/Earnings.sol": {
+        "content": "// SPDX-License-Identifier: MIT\r\npragma solidity ^0.8.28;\r\n\r\ncontract Earnings {\r\n    address public owner;\r\n    address public vaultContract;\r\n    \r\n    // Mapping: user => total earnings\r\n    mapping(address => uint256) public userEarnings;\r\n    \r\n    // Mapping: user => withdrawn amount\r\n    mapping(address => uint256) public userWithdrawn;\r\n    \r\n    // Protocol earnings (whip.finance)\r\n    uint256 public protocolEarnings;\r\n    uint256 public protocolWithdrawn;\r\n    \r\n    event EarningAdded(\r\n        address indexed user,\r\n        string ipId,\r\n        uint256 amount,\r\n        uint256 timestamp\r\n    );\r\n    \r\n    event ProtocolEarningAdded(\r\n        uint256 amount,\r\n        uint256 timestamp\r\n    );\r\n    \r\n    event Withdrawn(\r\n        address indexed user,\r\n        uint256 amount,\r\n        uint256 timestamp\r\n    );\r\n    \r\n    event ProtocolWithdrawn(\r\n        address indexed to,\r\n        uint256 amount,\r\n        uint256 timestamp\r\n    );\r\n    \r\n    modifier onlyOwner() {\r\n        require(msg.sender == owner, \"Not owner\");\r\n        _;\r\n    }\r\n    \r\n    modifier onlyVault() {\r\n        require(msg.sender == vaultContract, \"Not vault contract\");\r\n        _;\r\n    }\r\n    \r\n    constructor() {\r\n        owner = msg.sender;\r\n    }\r\n    \r\n    /**\r\n     * @dev Set the vault contract address (can only be set once)\r\n     * @param _vaultContract Address of the Vault contract\r\n     */\r\n    function setVaultContract(address _vaultContract) external onlyOwner {\r\n        require(vaultContract == address(0), \"Vault already set\");\r\n        require(_vaultContract != address(0), \"Invalid address\");\r\n        vaultContract = _vaultContract;\r\n    }\r\n    \r\n    /**\r\n     * @dev Add earnings for IP owner (called by Vault contract)\r\n     * @param user IP owner address\r\n     * @param ipId IP asset ID\r\n     */\r\n    function addUserEarning(address user, string calldata ipId) external payable onlyVault {\r\n        require(msg.value > 0, \"Amount required\");\r\n        require(user != address(0), \"Invalid user\");\r\n        \r\n        userEarnings[user] += msg.value;\r\n        \r\n        emit EarningAdded(user, ipId, msg.value, block.timestamp);\r\n    }\r\n    \r\n    /**\r\n     * @dev Add protocol earnings (called by Vault contract)\r\n     */\r\n    function addProtocolEarning() external payable onlyVault {\r\n        require(msg.value > 0, \"Amount required\");\r\n        \r\n        protocolEarnings += msg.value;\r\n        \r\n        emit ProtocolEarningAdded(msg.value, block.timestamp);\r\n    }\r\n    \r\n    /**\r\n     * @dev User withdraws their earnings\r\n     */\r\n    function withdraw() external {\r\n        uint256 available = userEarnings[msg.sender] - userWithdrawn[msg.sender];\r\n        require(available > 0, \"No earnings to withdraw\");\r\n        require(address(this).balance >= available, \"Insufficient contract balance\");\r\n        \r\n        userWithdrawn[msg.sender] += available;\r\n        \r\n        (bool success, ) = msg.sender.call{value: available}(\"\");\r\n        require(success, \"Withdrawal failed\");\r\n        \r\n        emit Withdrawn(msg.sender, available, block.timestamp);\r\n    }\r\n    \r\n    /**\r\n     * @dev Owner withdraws protocol earnings\r\n     * @param to Recipient address\r\n     */\r\n    function withdrawProtocol(address payable to) external onlyOwner {\r\n        uint256 available = protocolEarnings - protocolWithdrawn;\r\n        require(available > 0, \"No protocol earnings to withdraw\");\r\n        require(address(this).balance >= available, \"Insufficient contract balance\");\r\n        require(to != address(0), \"Invalid recipient\");\r\n        \r\n        protocolWithdrawn += available;\r\n        \r\n        (bool success, ) = to.call{value: available}(\"\");\r\n        require(success, \"Withdrawal failed\");\r\n        \r\n        emit ProtocolWithdrawn(to, available, block.timestamp);\r\n    }\r\n    \r\n    /**\r\n     * @dev Get available earnings for a user\r\n     * @param user User address\r\n     */\r\n    function getAvailableEarnings(address user) external view returns (uint256) {\r\n        return userEarnings[user] - userWithdrawn[user];\r\n    }\r\n    \r\n    /**\r\n     * @dev Get available protocol earnings\r\n     */\r\n    function getAvailableProtocolEarnings() external view returns (uint256) {\r\n        return protocolEarnings - protocolWithdrawn;\r\n    }\r\n    \r\n    /**\r\n     * @dev Get contract balance\r\n     */\r\n    function getContractBalance() external view returns (uint256) {\r\n        return address(this).balance;\r\n    }\r\n    \r\n    /**\r\n     * @dev Transfer ownership\r\n     * @param newOwner New owner address\r\n     */\r\n    function transferOwnership(address newOwner) external onlyOwner {\r\n        require(newOwner != address(0), \"Invalid address\");\r\n        owner = newOwner;\r\n    }\r\n    \r\n    /**\r\n     * @dev Fallback to receive native tokens\r\n     */\r\n    receive() external payable {}\r\n}\r\n\r\n"
+      }
+    }
+  }
+}

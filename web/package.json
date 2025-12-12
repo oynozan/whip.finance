@@ -1,0 +1,56 @@
+{
+    "name": "whip",
+    "version": "0.1.0",
+    "private": true,
+    "scripts": {
+        "dev": "next dev --turbopack",
+        "build": "next build",
+        "start": "next start",
+        "lint": "eslint",
+        "format": "prettier --write \"src/**/(*.tsx|*.ts|*.jsx|*.js|*.scss|*.css|*.json)\"",
+        "pm2": "pm2 start npm --name whip -- start"
+    },
+    "dependencies": {
+        "@dynamic-labs/ethereum": "^4.49.0",
+        "@dynamic-labs/sdk-react-core": "^4.49.0",
+        "@dynamic-labs/wagmi-connector": "^4.49.0",
+        "@radix-ui/react-dropdown-menu": "^2.1.16",
+        "@radix-ui/react-tooltip": "^1.2.8",
+        "@story-protocol/core-sdk": "^1.4.2",
+        "@tanstack/react-query": "^5.90.12",
+        "class-variance-authority": "^0.7.1",
+        "clsx": "^2.1.1",
+        "idb": "^8.0.3",
+        "lightweight-charts": "^4.2.1",
+        "lightweight-charts-react-wrapper": "^2.1.1",
+        "lucide-react": "^0.556.0",
+        "next": "16.0.8",
+        "next-themes": "^0.4.6",
+        "react": "19.2.1",
+        "react-dom": "19.2.1",
+        "sass": "^1.95.0",
+        "sonner": "^2.0.7",
+        "tailwind-merge": "^3.4.0",
+        "viem": "^2.41.2",
+        "wagmi": "^3.1.0",
+        "zustand": "^5.0.9"
+    },
+    "devDependencies": {
+        "@tailwindcss/postcss": "^4",
+        "@types/node": "^20",
+        "@types/react": "^19",
+        "@types/react-dom": "^19",
+        "babel-plugin-react-compiler": "1.0.0",
+        "eslint": "^9",
+        "eslint-config-next": "16.0.8",
+        "prettier": "^3.7.4",
+        "tailwindcss": "^4",
+        "tw-animate-css": "^1.4.0",
+        "typescript": "^5"
+    },
+    "overrides": {
+        "@dynamic-labs/wagmi-connector": {
+            "wagmi": "$wagmi"
+        }
+    }
+}
