@@ -16,12 +16,20 @@ export async function registerIp(
     nftMetadataURI: string,
     nftMetadataHash: `0x${string}`,
 ): Promise<{ txHash: `0x${string}`; ipId: string }> {
+    /*const licenseTerms = await client.license.registerPILTerms(
+        PILFlavor.commercialRemix({
+            commercialRevShare: 0,
+            defaultMintingFee: parseEther("0"),
+            currency: WIP_TOKEN_ADDRESS,
+        }),
+    );*/
+
     const response = await client.ipAsset.registerIpAsset({
         licenseTermsData: [
             {
                 terms: PILFlavor.commercialRemix({
                     commercialRevShare: 0,
-                    defaultMintingFee: parseEther("0.005"),
+                    defaultMintingFee: parseEther("0"),
                     currency: WIP_TOKEN_ADDRESS,
                 }),
             },
@@ -58,13 +66,13 @@ export async function registerDerivativeIp(
     const response = await client.ipAsset.registerDerivativeIpAsset({
         derivData: {
             parentIpIds: [parentIpId as `0x${string}`],
-            licenseTermsIds: [],
+            licenseTermsIds: [BigInt(1857)],
         },
         licenseTermsData: [
             {
                 terms: PILFlavor.commercialRemix({
                     commercialRevShare: 0,
-                    defaultMintingFee: parseEther("0.005"),
+                    defaultMintingFee: parseEther("0"),
                     currency: WIP_TOKEN_ADDRESS,
                 }),
             },

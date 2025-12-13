@@ -19,11 +19,11 @@ import { setupStoryClient, registerIp, registerDerivativeIp } from "@/lib/storyP
 import { useRouter } from "next/navigation";
 
 interface AssetFormData {
-    name: string;
-    ticker: string;
-    description: string;
-    image: File | null;
-    imagePreview: string;
+  name: string;
+  ticker: string;
+  description: string;
+  image: File | null;
+  imagePreview: string;
     parentIpId?: string; // For derivative assets
 }
 
@@ -59,38 +59,38 @@ export default function CreateIPWindow() {
         return null;
     });
 
-    const [step, setStep] = useState(1);
+  const [step, setStep] = useState(1);
     const [assetType, setAssetType] = useState<"mint" | "derivative" | null>(
         prefilledParentIpId ? "derivative" : null,
     );
-    const [formData, setFormData] = useState<AssetFormData>({
+  const [formData, setFormData] = useState<AssetFormData>({
         name: "",
         ticker: "",
         description: "",
-        image: null,
+    image: null,
         imagePreview: "",
         parentIpId: prefilledParentIpId || "",
-    });
+  });
     const [uploadedData, setUploadedData] = useState<UploadedNFTData | null>(null);
-    const [isProcessing, setIsProcessing] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
 
-    const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
-        if (file) {
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
             setFormData(prev => ({
                 ...prev,
-                image: file,
-                imagePreview: URL.createObjectURL(file),
+        image: file,
+        imagePreview: URL.createObjectURL(file),
             }));
-        }
+    }
     };
 
     const handleFormChange = (data: Partial<AssetFormData>) => {
         setFormData(prev => ({ ...prev, ...data }));
-    };
+  };
 
     const handleSubmitForm = async (e: React.FormEvent) => {
-        e.preventDefault();
+    e.preventDefault();
 
         try {
             if (!formData.image) {
@@ -98,7 +98,7 @@ export default function CreateIPWindow() {
                 return;
             }
 
-            setIsProcessing(true);
+    setIsProcessing(true);
 
             const uploadFormData = new FormData();
             uploadFormData.append("name", formData.name);
@@ -136,12 +136,12 @@ export default function CreateIPWindow() {
             console.error("Upload error:", error);
             toast.error("Failed to upload metadata. Please try again.");
         } finally {
-            setIsProcessing(false);
+    setIsProcessing(false);
         }
-    };
+  };
 
-    const handleRegisterAsset = async () => {
-        setIsProcessing(true);
+  const handleRegisterAsset = async () => {
+    setIsProcessing(true);
         try {
             // Ensure wallet client is available
             if (!walletClient) {
@@ -230,11 +230,11 @@ export default function CreateIPWindow() {
             console.error("Registration error:", error);
             toast.error("Failed to register asset. Please try again.");
         } finally {
-            setIsProcessing(false);
+    setIsProcessing(false);
         }
-    };
+  };
 
-    if (!assetType) {
+  if (!assetType) {
         return <AssetTypeSelection onSelectType={setAssetType} />;
     }
 
@@ -285,8 +285,8 @@ function AssetTypeSelection({
     ];
 
     return (
-        <div className="w-[900px]">
-            <div className="grid grid-cols-2 gap-6">
+      <div className="w-[900px]">
+        <div className="grid grid-cols-2 gap-6">
                 <InfoPanel title="Take your place in the trenches" sections={infoSections} />
                 <div className="flex flex-col justify-between">
                     <h3 className="text-lg font-semibold mb-6">Choose Asset Type</h3>
@@ -303,8 +303,8 @@ function AssetTypeSelection({
                         onClick={() => onSelectType("derivative")}
                     />
                 </div>
-            </div>
-        </div>
+                </div>
+              </div>
     );
 }
 
@@ -459,7 +459,7 @@ function RegisterAssetStep({
             <div className="flex items-center justify-between mb-6">
                 <h3 className="text-lg font-semibold">Review & Confirm</h3>
                 <BackButton onClick={onBack} label="Back" />
-            </div>
+          </div>
 
             <div className="space-y-4 mb-6">
                 {formData.imagePreview && (
@@ -469,7 +469,7 @@ function RegisterAssetStep({
                             alt={formData.name}
                             className="max-h-48 rounded-lg"
                         />
-                    </div>
+                </div>
                 )}
 
                 <div className="space-y-3">
@@ -481,7 +481,7 @@ function RegisterAssetStep({
                         </span>
                     </DetailCard>
                 </div>
-            </div>
+              </div>
 
             <ActionButton
                 onClick={onRegister}
@@ -497,13 +497,13 @@ function RegisterAssetStep({
 function BackButton({ onClick, label }: { onClick: () => void; label: string }) {
     return (
         <div>
-            <button
+          <button
                 onClick={onClick}
-                className="flex items-center gap-2 text-sm text-secondary-text hover:text-foreground transition-colors"
-            >
-                <ArrowLeft className="w-4 h-4" />
+            className="flex items-center gap-2 text-sm text-secondary-text hover:text-foreground transition-colors"
+          >
+            <ArrowLeft className="w-4 h-4" />
                 {label}
-            </button>
+          </button>
         </div>
     );
 }
@@ -513,7 +513,7 @@ function InfoPanel({ title, sections }: { title: string; sections: InfoSection[]
         <div className="rounded-lg p-[2px] bg-gradient-to-br from-white/20 to-white/10 relative">
             <div className="bg-background backdrop-blur-sm rounded-lg p-6 h-full">
                 <h3 className="text-xl font-bold mb-4">{title}</h3>
-                <div className="space-y-4 text-sm">
+              <div className="space-y-4 text-sm">
                     {sections.map((section, idx) => (
                         <div key={idx}>
                             <h4 className="font-semibold mb-2">{section.title}</h4>
@@ -521,8 +521,8 @@ function InfoPanel({ title, sections }: { title: string; sections: InfoSection[]
                         </div>
                     ))}
                 </div>
-            </div>
-        </div>
+                </div>
+              </div>
     );
 }
 
@@ -542,16 +542,16 @@ function StepLayout({
                 {infoPanel}
                 <div>{children}</div>
             </div>
-        </div>
+          </div>
     );
 }
 
 function FormField({ label, children }: { label: string; children: ReactNode }) {
     return (
-        <div>
+          <div>
             <label className="block text-sm font-medium mb-2">{label}</label>
             {children}
-        </div>
+              </div>
     );
 }
 
@@ -569,11 +569,11 @@ function TextInput({
     required?: boolean;
 }) {
     return (
-        <input
-            type="text"
+                <input
+                  type="text"
             value={value}
             onChange={e => onChange(e.target.value)}
-            className="w-full px-4 py-2 bg-secondary-bg border border-border-subtle rounded-lg focus:outline-none focus:border-positive transition-colors"
+                  className="w-full px-4 py-2 bg-secondary-bg border border-border-subtle rounded-lg focus:outline-none focus:border-positive transition-colors"
             placeholder={placeholder}
             maxLength={maxLength}
             required={required}
@@ -595,10 +595,10 @@ function TextArea({
     required?: boolean;
 }) {
     return (
-        <textarea
+                <textarea
             value={value}
             onChange={e => onChange(e.target.value)}
-            className="w-full px-4 py-2 bg-secondary-bg border border-border-subtle rounded-lg focus:outline-none focus:border-positive transition-colors resize-none"
+                  className="w-full px-4 py-2 bg-secondary-bg border border-border-subtle rounded-lg focus:outline-none focus:border-positive transition-colors resize-none"
             placeholder={placeholder}
             rows={rows}
             required={required}
@@ -616,28 +616,28 @@ function ImageUpload({
     required?: boolean;
 }) {
     return (
-        <div className="border-2 border-dashed border-border-subtle rounded-lg p-6 text-center hover:border-positive transition-colors cursor-pointer">
-            <input
-                type="file"
-                accept="image/*"
+                <div className="border-2 border-dashed border-border-subtle rounded-lg p-6 text-center hover:border-positive transition-colors cursor-pointer">
+                  <input
+                    type="file"
+                    accept="image/*"
                 onChange={onUpload}
-                className="hidden"
-                id="image-upload"
+                    className="hidden"
+                    id="image-upload"
                 required={required}
-            />
-            <label htmlFor="image-upload" className="cursor-pointer">
+                  />
+                  <label htmlFor="image-upload" className="cursor-pointer">
                 {imagePreview ? (
                     <img src={imagePreview} alt="Preview" className="max-h-32 mx-auto rounded" />
-                ) : (
-                    <div className="space-y-2">
+                    ) : (
+                      <div className="space-y-2">
                         <Upload className="w-8 h-8 mx-auto text-muted-text" />
                         <p className="text-sm text-secondary-text">Click to upload image</p>
-                    </div>
-                )}
-            </label>
-        </div>
+                      </div>
+                    )}
+                  </label>
+      </div>
     );
-}
+  }
 
 function ActionButton({
     onClick,
@@ -663,21 +663,21 @@ function ActionButton({
     };
 
     return (
-        <button
+          <button
             type={type}
             onClick={type === "button" ? handleClick : onClick}
             disabled={isLoading || disabled}
             className="w-full px-4 py-3 bg-primary text-background rounded-lg font-medium hover:bg-primary/80 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-        >
+            >
             {isLoading ? (
                 <>
-                    <Loader2 className="w-4 h-4 animate-spin" />
+                  <Loader2 className="w-4 h-4 animate-spin" />
                     {loadingText}
                 </>
-            ) : (
+              ) : (
                 children
-            )}
-        </button>
+              )}
+            </button>
     );
 }
 
@@ -694,9 +694,9 @@ function DetailCard({
         <div className="p-4 bg-card-bg border border-border-subtle rounded-lg break-all">
             <p className="text-xs text-muted-text mb-1">{label}</p>
             <p className={`${mono ? "font-mono text-sm" : "font-semibold"}`}>{children}</p>
-        </div>
+      </div>
     );
-}
+  }
 
 function AssetTypeCard({
     Icon,
@@ -712,7 +712,7 @@ function AssetTypeCard({
     disabled?: boolean;
 }) {
     return (
-        <button
+          <button
             onClick={onClick}
             disabled={disabled}
             className={`w-full p-6 bg-card-bg border-2 border-border-subtle rounded-lg hover:border-primary transition-all text-left group ${
@@ -732,11 +732,11 @@ function AssetTypeCard({
                 <div className="flex-1 flex flex-col gap-0.5">
                     <h4 className="font-semibold text-lg">{title}</h4>
                     <p className="text-sm text-secondary-text">{description}</p>
-                </div>
+              </div>
             </div>
-        </button>
+            </button>
     );
-}
+  }
 
 function InfoList({ items }: { items: string[] }) {
     return (

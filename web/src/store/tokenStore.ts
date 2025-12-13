@@ -48,11 +48,11 @@ export const useTokenStore = create<TokenStore>((set, get) => ({
         const { tokens, searchQuery, sortOrder } = get();
 
         let filtered = tokens;
-        
-        if (searchQuery) {
-            const query = searchQuery.toLowerCase();
+
+            if (searchQuery) {
+                const query = searchQuery.toLowerCase();
             filtered = tokens.filter(token => token.id.toLowerCase().includes(query));
-        }
+            }
 
         // Create a new array before sorting to avoid mutation
         const sorted = [...filtered].sort((a, b) => {

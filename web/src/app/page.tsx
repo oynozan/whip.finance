@@ -90,19 +90,19 @@ export default function Home() {
     }, [hasMore, isLoading]);
 
     return (
-        <div className="flex-1 flex flex-col">
-            <ColumnHeader
-                title="Trenches"
+                    <div className="flex-1 flex flex-col">
+                        <ColumnHeader
+                            title="Trenches"
                 onSort={toggleSort}
                 sortLabel={sortOrder === "desc" ? "Newest" : "Oldest"}
-            />
+                        />
 
-            <div className="flex-1 overflow-y-auto p-6 scrollbar-hidden max-h-[calc(100vh-10rem-2px)]">
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-3">
-                    {filteredTokens.map(token => (
-                        <TokenCard key={token.id} token={token} />
-                    ))}
-                </div>
+                        <div className="flex-1 overflow-y-auto p-6 scrollbar-hidden max-h-[calc(100vh-10rem-2px)]">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-3">
+                                {filteredTokens.map(token => (
+                                    <TokenCard key={token.id} token={token} />
+                                ))}
+                            </div>
                 <div
                     ref={observerRef}
                     className="h-12 flex items-center justify-center text-xs text-muted-text"
@@ -112,7 +112,7 @@ export default function Home() {
                         : hasMore
                             ? ""
                             : "No more to see here"}
-                </div>
+                    </div>
             </div>
         </div>
     );

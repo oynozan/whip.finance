@@ -20,6 +20,8 @@
         "@tanstack/react-query": "^5.90.12",
         "class-variance-authority": "^0.7.1",
         "clsx": "^2.1.1",
+        "desm": "^1.3.1",
+        "fastbench": "^1.0.1",
         "idb": "^8.0.3",
         "lightweight-charts": "^4.2.1",
         "lightweight-charts-react-wrapper": "^2.1.1",
@@ -31,8 +33,11 @@
         "sass": "^1.95.0",
         "sonner": "^2.0.7",
         "tailwind-merge": "^3.4.0",
+        "tap": "^21.5.0",
+        "tape": "^5.9.0",
         "viem": "^2.41.2",
         "wagmi": "^3.1.0",
+        "why-is-node-running": "^3.2.2",
         "zustand": "^5.0.9"
     },
     "devDependencies": {

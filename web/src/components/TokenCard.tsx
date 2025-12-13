@@ -88,14 +88,14 @@ function TokenCard({ token }: { token: TokenCardProps }) {
         >
             <div className="flex items-start gap-3">
                 {token.avatar ? (
-                    <Image
+                <Image
                         quality={100}
-                        src={token.avatar}
-                        alt={token.name}
-                        width={96}
-                        height={96}
-                        className="aspect-square h-24 w-24 rounded-lg border-2 border-primary object-cover"
-                    />
+                    src={token.avatar}
+                    alt={token.name}
+                    width={96}
+                    height={96}
+                    className="aspect-square h-24 w-24 rounded-lg border-2 border-primary object-cover"
+                />
                 ) : (
                     <div className="aspect-square h-24 w-24 rounded-lg border-2 border-primary bg-border-subtle flex items-center justify-center text-lg font-semibold text-foreground">
                         {token.name.slice(0, 2).toUpperCase()}
@@ -104,7 +104,7 @@ function TokenCard({ token }: { token: TokenCardProps }) {
                 <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between gap-2">
                         <div className="flex items-center gap-2 flex-1 min-w-0">
-                            <h3 className="font-semibold text-sm truncate">{token.name}</h3>
+                        <h3 className="font-semibold text-sm truncate">{token.name}</h3>
                             {token.isDerivative && (
                                 <span
                                     className="text-xs font-mono text-muted-text px-1.5 py-0.5 rounded bg-border-subtle"
@@ -159,23 +159,23 @@ function TokenCard({ token }: { token: TokenCardProps }) {
                         )}
                     </div>
                     <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2 mb-1">
-                            <div className="flex items-end gap-1">
+                    <div className="flex items-center gap-2 mb-1">
+                        <div className="flex items-end gap-1">
                                 <span
                                     className="text-lg font-bold font-mono"
                                     style={{ lineHeight: "1" }}
                                 >
                                     {formatMarketCap(marketCapUSD)}
-                                </span>
-                                <span className="text-muted-text text-xs">MC</span>
-                            </div>
-                            <span
-                                className={`text-xs font-medium ${getChangeColor(token.priceChange1m)}`}
-                                title="1 minute price change"
-                            >
-                                {formatPercentage(token.priceChange1m)}
                             </span>
+                            <span className="text-muted-text text-xs">MC</span>
                         </div>
+                        <span
+                            className={`text-xs font-medium ${getChangeColor(token.priceChange1m)}`}
+                            title="1 minute price change"
+                        >
+                            {formatPercentage(token.priceChange1m)}
+                        </span>
+                    </div>
                         <div className="w-fit text-[11px] text-secondary-text mb-1">
                             {supply.toLocaleString()} IP • {marketCapIP.toLocaleString(undefined, {
                                 minimumFractionDigits: 2,
