@@ -12,7 +12,7 @@ import { useLogsStore } from "@/store/logsStore";
 import { useMarketDataStore } from "@/store/marketDataStore";
 
 const WalletProviders = dynamic(
-    () => import("./WalletProviders"),
+    () => import("./Wallet"),
     { ssr: false }
 );
 
