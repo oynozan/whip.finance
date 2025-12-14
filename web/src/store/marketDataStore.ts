@@ -27,4 +27,3 @@ export const useMarketDataStore = create<MarketDataStore>((set, get) => ({
         })),
     getIPData: ipId => get().ipData[ipId] || null,
 }));
-

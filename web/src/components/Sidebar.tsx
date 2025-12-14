@@ -25,7 +25,7 @@ export default function Sidebar() {
 
     if (isCollapsed) {
         return (
-            <div className="w-12 h-[calc(100vh-81px)] bg-secondary-bg border-r border-border-subtle flex flex-col items-center py-4">
+            <div className="hidden sm:flex w-12 h-[calc(100vh-81px)] bg-secondary-bg border-r border-border-subtle flex-col items-center py-4">
                 <button
                     onClick={() => setIsCollapsed(false)}
                     className="p-2 hover:bg-border-subtle rounded-lg transition-colors"
@@ -37,7 +37,7 @@ export default function Sidebar() {
     }
 
     return (
-        <div className="w-64 h-[calc(100vh-81px)] bg-secondary-bg border-r border-border-subtle flex flex-col">
+        <div className="hidden sm:flex sm:w-48 lg:w-64 h-[calc(100vh-81px)] bg-secondary-bg border-r border-border-subtle flex-col">
             <div className="flex flex-col flex-1 overflow-y-hidden">
                 <div className="flex items-center justify-between px-2 h-12">
                     <button

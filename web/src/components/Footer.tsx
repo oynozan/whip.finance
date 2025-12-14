@@ -32,7 +32,7 @@ export default function Footer() {
                         <p className="text-muted-text text-xs">No logs yet...</p>
                     ) : (
                         <div className="space-y-1 font-mono text-xs max-h-[400px] overflow-y-auto">
-                            {logs.map((log) => (
+                            {logs.map(log => (
                                 <p key={log.id} className="break-all">
                                     [{formatTimestamp(log.timestamp)}] {log.message}
                                 </p>

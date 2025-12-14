@@ -7,12 +7,15 @@ interface WatchlistStore {
     loadWatchlist: () => Promise<void>;
     toggleWatchlist: (token: TokenCardProps) => Promise<void>;
     removeFromWatchlist: (id: string) => Promise<void>;
-    updatePricing: (ipId: string, pricing: {
-        marketCap: number;
-        currentPrice: number;
-        supply: number;
-        reserve: number;
-    }) => void;
+    updatePricing: (
+        ipId: string,
+        pricing: {
+            marketCap: number;
+            currentPrice: number;
+            supply: number;
+            reserve: number;
+        },
+    ) => void;
 }
 
 export const useWatchlistStore = create<WatchlistStore>((set, get) => ({
@@ -40,7 +43,8 @@ export const useWatchlistStore = create<WatchlistStore>((set, get) => ({
         const exists = Boolean(watchlist[token.id]);
 
         try {
-            const { saveTokenToWatchlist, removeTokenFromWatchlist } = await import("@/lib/watchlistDB");
+            const { saveTokenToWatchlist, removeTokenFromWatchlist } =
+                await import("@/lib/watchlistDB");
             if (exists) {
                 await removeTokenFromWatchlist(token.id);
                 const updated = { ...watchlist };
@@ -74,9 +78,9 @@ export const useWatchlistStore = create<WatchlistStore>((set, get) => ({
     updatePricing: (ipId, pricing) => {
         const { watchlist } = get();
         const token = watchlist[ipId];
-        
+
         if (!token) return; // Token not in watchlist
-        
+
         set({
             watchlist: {
                 ...watchlist,
@@ -85,9 +89,8 @@ export const useWatchlistStore = create<WatchlistStore>((set, get) => ({
                     marketCap: pricing.marketCap,
                     currentPrice: pricing.currentPrice,
                     supply: pricing.supply,
-                }
-            }
+                },
+            },
         });
     },
-}))
-
+}));

@@ -30,20 +30,22 @@ export default function Chart({ data }: ChartProps) {
             console.log("📈 No data to format");
             return [];
         }
-        
+
         try {
-            const formatted = data.map((candle) => {
-                const timeValue = new Date(candle.time).getTime() / 1000;
-                
-                return {
-                    time: Math.floor(timeValue) as never,
-                    open: Number(candle.open) || 0,
-                    high: Number(candle.high) || 0,
-                    low: Number(candle.low) || 0,
-                    close: Number(candle.close) || 0,
-                };
-            }).sort((a, b) => (a.time as number) - (b.time as number));
-            
+            const formatted = data
+                .map(candle => {
+                    const timeValue = new Date(candle.time).getTime() / 1000;
+
+                    return {
+                        time: Math.floor(timeValue) as never,
+                        open: Number(candle.open) || 0,
+                        high: Number(candle.high) || 0,
+                        low: Number(candle.low) || 0,
+                        close: Number(candle.close) || 0,
+                    };
+                })
+                .sort((a, b) => (a.time as number) - (b.time as number));
+
             console.log("📈 Formatted data for chart:", formatted.length, "candles");
             return formatted;
         } catch (error) {
@@ -84,7 +86,7 @@ const options = {
     height: 300,
     layout: {
         background: {
-            color: "transparent"
+            color: "transparent",
         },
         textColor: "rgba(255, 255, 255, 0.9)",
     },
@@ -94,7 +96,7 @@ const options = {
         },
         horzLines: {
             color: "rgba(255, 255, 255, 0.02)",
-        }
+        },
     },
     crosshair: {
         mode: CrosshairMode.Normal,
@@ -106,4 +108,3 @@ const options = {
         borderColor: "rgba(197, 203, 206, 0.8)",
     },
 };
-

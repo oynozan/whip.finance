@@ -88,18 +88,19 @@ export function Window({ id, title, children }: WindowProps) {
             <div
                 ref={windowRef}
                 className="fixed bg-background border border-border-default rounded-lg text-white shadow-2xl invisible"
-                style={{ 
-                    left: '0px',
-                    top: '0px',
-                    maxWidth: '90vw',
-                    maxHeight: '90vh',
-                    zIndex: 9999
+                style={{
+                    left: "0px",
+                    top: "0px",
+                    maxWidth: "calc(100vw - 1rem)",
+                    maxHeight: "calc(100vh - 5rem)",
+                    width: "min(900px, 100vw - 1rem)",
+                    zIndex: 9999,
                 }}
             >
                 <div className="flex items-center justify-between border-b border-border-subtle rounded-t-lg px-3 py-1.5 cursor-move bg-secondary-bg">
                     <h2 className="text-sm font-semibold">{title}</h2>
                 </div>
-                <div className="overflow-auto p-4" style={{ maxHeight: '540px' }}>
+                <div className="overflow-auto p-4" style={{ maxHeight: "540px" }}>
                     {children}
                 </div>
             </div>
@@ -110,27 +111,28 @@ export function Window({ id, title, children }: WindowProps) {
         <div
             ref={windowRef}
             className="fixed bg-background border border-border-default rounded-lg text-white shadow-2xl"
-            style={{ 
+            style={{
                 left: `${pos.x}px`,
                 top: `${pos.y}px`,
-                maxWidth: '90vw',
-                maxHeight: '90vh',
-                zIndex: 9999
+                maxWidth: "calc(100vw - 1rem)",
+                maxHeight: "calc(100vh - 5rem)",
+                width: "min(900px, 100vw - 1rem)",
+                zIndex: 9999,
             }}
         >
             <div
-                className="flex items-center justify-between border-b border-border-subtle rounded-t-lg px-3 py-1.5 cursor-move bg-secondary-bg"
+                className="flex items-center justify-between border-b border-border-subtle rounded-t-lg px-2 sm:px-3 py-1.5 cursor-move bg-secondary-bg"
                 onPointerDown={startDrag}
             >
-                <h2 className="text-sm font-semibold">{title}</h2>
+                <h2 className="text-xs sm:text-sm font-semibold truncate">{title}</h2>
                 <button
                     onClick={() => closeWindow(id)}
-                    className="hover:bg-border-subtle rounded transition-colors"
+                    className="hover:bg-border-subtle rounded transition-colors flex-shrink-0"
                 >
                     <X size={16} className="text-secondary-text" />
                 </button>
             </div>
-            <div className="overflow-auto p-4 max-h-[calc(90vh-3rem)]">
+            <div className="overflow-auto p-2 sm:p-4 max-h-[calc(100vh-5rem-2.5rem)]">
                 {children}
             </div>
         </div>
@@ -142,12 +144,12 @@ export function WindowManager() {
 
     return (
         <>
-            {windows.map((window) =>
+            {windows.map(window =>
                 window.isOpen ? (
                     <Window key={window.id} id={window.id} title={window.title}>
                         {window.content}
                     </Window>
-                ) : null
+                ) : null,
             )}
         </>
     );

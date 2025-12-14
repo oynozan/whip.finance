@@ -35,38 +35,48 @@ function useNow() {
 }
 
 function TokenCard({ token }: { token: TokenCardProps }) {
-    // Use specific selectors to prevent unnecessary re-renders
     const toggleWatchlist = useWatchlistStore(state => state.toggleWatchlist);
     const isWatchlisted = useWatchlistStore(state => Boolean(state.watchlist[token.id]));
     const ipPriceUSD = usePriceDataStore(state => state.price);
-    // Only subscribe to this specific IP's data to prevent re-renders on other IP updates
     const liveData = useMarketDataStore(state => state.ipData[token.id] || null);
     const now = useNow();
 
     // Memoize expensive calculations
-    const supply = useMemo(() => liveData?.supply ?? token.supply ?? 0, [liveData?.supply, token.supply]);
+    const supply = useMemo(
+        () => liveData?.supply ?? token.supply ?? 0,
+        [liveData?.supply, token.supply],
+    );
     const reserve = useMemo(() => liveData?.reserve ?? 0, [liveData?.reserve]);
-    
-    // Market Cap = Reserve (TVL) for bonding curves, NOT supply × price
-    const marketCapIP = useMemo(() => liveData?.marketCap ?? reserve, [liveData?.marketCap, reserve]);
+
+    // TVL for bonding curves
+    const marketCapIP = useMemo(
+        () => liveData?.marketCap ?? reserve,
+        [liveData?.marketCap, reserve],
+    );
     const marketCapUSD = useMemo(() => marketCapIP * (ipPriceUSD || 1), [marketCapIP, ipPriceUSD]);
 
-    const handleCopy = useCallback(async (e: React.MouseEvent) => {
-        e.preventDefault();
-        e.stopPropagation();
-        try {
-            await navigator.clipboard.writeText(token.id);
-            toast.success("IP ID copied");
-        } catch {
-            toast.error("Failed to copy");
-        }
-    }, [token.id]);
+    const handleCopy = useCallback(
+        async (e: React.MouseEvent) => {
+            e.preventDefault();
+            e.stopPropagation();
+            try {
+                await navigator.clipboard.writeText(token.id);
+                toast.success("IP ID copied");
+            } catch {
+                toast.error("Failed to copy");
+            }
+        },
+        [token.id],
+    );
 
-    const handleToggleWatchlist = useCallback((e: React.MouseEvent) => {
-        e.preventDefault();
-        e.stopPropagation();
-        toggleWatchlist(token);
-    }, [toggleWatchlist, token]);
+    const handleToggleWatchlist = useCallback(
+        (e: React.MouseEvent) => {
+            e.preventDefault();
+            e.stopPropagation();
+            toggleWatchlist(token);
+        },
+        [toggleWatchlist, token],
+    );
 
     const getSocialIcon = useCallback((platform: string) => {
         switch (platform) {
@@ -84,27 +94,29 @@ function TokenCard({ token }: { token: TokenCardProps }) {
     return (
         <Link
             href={`/ip/${token.id}`}
-            className="card p-2 hover:shadow-lg hover:shadow-positive/5 rounded-lg"
+            className="card p-1.5 sm:p-2 hover:shadow-lg hover:shadow-positive/5 rounded-lg"
         >
-            <div className="flex items-start gap-3">
+            <div className="flex flex-col sm:flex-row items-start gap-2 sm:gap-3">
                 {token.avatar ? (
-                <Image
+                    <Image
                         quality={100}
-                    src={token.avatar}
-                    alt={token.name}
-                    width={96}
-                    height={96}
-                    className="aspect-square h-24 w-24 rounded-lg border-2 border-primary object-cover"
-                />
+                        src={token.avatar}
+                        alt={token.name}
+                        width={96}
+                        height={96}
+                        className="aspect-square h-16 w-16 sm:h-24 sm:w-24 rounded-lg border-2 border-primary object-cover shrink-0"
+                    />
                 ) : (
-                    <div className="aspect-square h-24 w-24 rounded-lg border-2 border-primary bg-border-subtle flex items-center justify-center text-lg font-semibold text-foreground">
+                    <div className="aspect-square h-16 w-16 sm:h-24 sm:w-24 rounded-lg border-2 border-primary bg-border-subtle flex items-center justify-center text-lg font-semibold text-foreground shrink-0">
                         {token.name.slice(0, 2).toUpperCase()}
                     </div>
                 )}
-                <div className="flex-1 min-w-0">
-                    <div className="flex items-center justify-between gap-2">
+                <div className="flex-1 min-w-0 w-full">
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
                         <div className="flex items-center gap-2 flex-1 min-w-0">
-                        <h3 className="font-semibold text-sm truncate">{token.name}</h3>
+                            <h3 className="font-semibold text-xs sm:text-sm truncate">
+                                {token.name}
+                            </h3>
                             {token.isDerivative && (
                                 <span
                                     className="text-xs font-mono text-muted-text px-1.5 py-0.5 rounded bg-border-subtle"
@@ -140,7 +152,7 @@ function TokenCard({ token }: { token: TokenCardProps }) {
                             </button>
                         </div>
                     </div>
-                    <div className="flex items-center gap-2 text-xs text-muted-text mb-2">
+                    <div className="flex flex-wrap items-center gap-1 sm:gap-2 text-xs text-muted-text mb-2">
                         <span className="text-primary">{formatAge(token.timestamp, now)}</span>
                         {token.socialLinks && token.socialLinks.length > 0 && (
                             <div className="flex items-center gap-1">
@@ -158,26 +170,27 @@ function TokenCard({ token }: { token: TokenCardProps }) {
                             </div>
                         )}
                     </div>
-                    <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2 mb-1">
-                        <div className="flex items-end gap-1">
+                    <div className="flex items-center justify-between gap-2">
+                        <div className="flex items-center gap-2 mb-1">
+                            <div className="flex items-end gap-1">
                                 <span
                                     className="text-lg font-bold font-mono"
                                     style={{ lineHeight: "1" }}
                                 >
                                     {formatMarketCap(marketCapUSD)}
+                                </span>
+                                <span className="text-muted-text text-xs">MC</span>
+                            </div>
+                            <span
+                                className={`text-xs font-medium ${getChangeColor(token.priceChange1m)}`}
+                                title="1 minute price change"
+                            >
+                                {formatPercentage(token.priceChange1m)}
                             </span>
-                            <span className="text-muted-text text-xs">MC</span>
                         </div>
-                        <span
-                            className={`text-xs font-medium ${getChangeColor(token.priceChange1m)}`}
-                            title="1 minute price change"
-                        >
-                            {formatPercentage(token.priceChange1m)}
-                        </span>
-                    </div>
-                        <div className="w-fit text-[11px] text-secondary-text mb-1">
-                            {supply.toLocaleString()} IP • {marketCapIP.toLocaleString(undefined, {
+                        <div className="w-fit text-[11px] text-end text-secondary-text mb-1">
+                            {supply.toLocaleString()} IP •{" "}
+                            {marketCapIP.toLocaleString(undefined, {
                                 minimumFractionDigits: 2,
                                 maximumFractionDigits: 2,
                             })}{" "}

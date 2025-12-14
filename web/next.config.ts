@@ -12,6 +12,10 @@ const nextConfig: NextConfig = {
                 protocol: "https",
                 hostname: "gateway.pinata.cloud",
             },
+            {
+                protocol: "https",
+                hostname: process.env.NEXT_PUBLIC_PINATA_GATEWAY!.replace(/^https?:\/\//, ""),
+            }
         ],
     },
     devIndicators: false,

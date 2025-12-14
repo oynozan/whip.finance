@@ -63,7 +63,7 @@ export default function IPDetailPage() {
     const { data: walletClient } = useWalletClient();
     const ipPriceUSD = usePriceDataStore(state => state.price);
     const { openWindow } = useWindowStore();
-    
+
     const { data: balanceData } = useBalance({
         address: walletClient?.account?.address,
     });
@@ -89,9 +89,7 @@ export default function IPDetailPage() {
         return estTotalIP * (ipPriceUSD || 1);
     }, [estTotalIP, ipPriceUSD]);
 
-    const walletBalance = balanceData
-        ? formatUnits(balanceData.value, balanceData.decimals)
-        : "0";
+    const walletBalance = balanceData ? formatUnits(balanceData.value, balanceData.decimals) : "0";
 
     const setQuickAmount = (value: string) => {
         setAmount(value);
@@ -171,17 +169,18 @@ export default function IPDetailPage() {
         try {
             if (Array.isArray(data) && data.length > 0) {
                 // Validate data structure
-                const validData = data.filter(candle => 
-                    candle && 
-                    candle.time && 
-                    typeof candle.open === 'number' && 
-                    typeof candle.high === 'number' && 
-                    typeof candle.low === 'number' && 
-                    typeof candle.close === 'number' &&
-                    isFinite(candle.open) &&
-                    isFinite(candle.high) &&
-                    isFinite(candle.low) &&
-                    isFinite(candle.close)
+                const validData = data.filter(
+                    candle =>
+                        candle &&
+                        candle.time &&
+                        typeof candle.open === "number" &&
+                        typeof candle.high === "number" &&
+                        typeof candle.low === "number" &&
+                        typeof candle.close === "number" &&
+                        isFinite(candle.open) &&
+                        isFinite(candle.high) &&
+                        isFinite(candle.low) &&
+                        isFinite(candle.close),
                 );
                 setChartData(validData);
             }
@@ -195,12 +194,12 @@ export default function IPDetailPage() {
             console.log("📊 Received chart update:", candle);
             // Validate the candle data
             if (
-                candle && 
-                candle.time && 
-                typeof candle.open === 'number' && 
-                typeof candle.high === 'number' && 
-                typeof candle.low === 'number' && 
-                typeof candle.close === 'number' &&
+                candle &&
+                candle.time &&
+                typeof candle.open === "number" &&
+                typeof candle.high === "number" &&
+                typeof candle.low === "number" &&
+                typeof candle.close === "number" &&
                 isFinite(candle.open) &&
                 isFinite(candle.high) &&
                 isFinite(candle.low) &&
@@ -238,9 +237,14 @@ export default function IPDetailPage() {
 
     useEffect(() => {
         if (!ipId) return;
-        
-        console.log("[IPDetailPage] Setting up socket for IP:", ipId, "Socket connected:", socket.connected);
-        
+
+        console.log(
+            "[IPDetailPage] Setting up socket for IP:",
+            ipId,
+            "Socket connected:",
+            socket.connected,
+        );
+
         // Register socket listeners FIRST
         socket.on("price", handlePrice);
         socket.on("trade", handleTrade);
@@ -281,7 +285,16 @@ export default function IPDetailPage() {
             socket.off("trade-error", handleError);
             socket.off("chart-error", handleChartError);
         };
-    }, [ipId, handlePrice, handleTrade, handleTrades, handleChartData, handleChartUpdate, handleError, handleChartError]);
+    }, [
+        ipId,
+        handlePrice,
+        handleTrade,
+        handleTrades,
+        handleChartData,
+        handleChartUpdate,
+        handleError,
+        handleChartError,
+    ]);
 
     const doTrade = async (side: "buy" | "sell") => {
         if (!ipId) return;
@@ -351,7 +364,9 @@ export default function IPDetailPage() {
     if (loading) {
         return (
             <div className="flex-1 flex items-center justify-center">
-                <div className="text-secondary-text"><Loader2 className="w-4 h-4 animate-spin" /></div>
+                <div className="text-secondary-text">
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                </div>
             </div>
         );
     }
@@ -434,7 +449,9 @@ export default function IPDetailPage() {
                                     </p>
                                     <div className="flex flex-col text-sm">
                                         <div className="flex items-center justify-between">
-                                            <span className="text-muted-text">Market Cap (TVL):</span>
+                                            <span className="text-muted-text">
+                                                Market Cap (TVL):
+                                            </span>
                                             <span className="font-semibold text-foreground">
                                                 {marketCapIP.toFixed(2)} IP (
                                                 {formatMarketCap(marketCapUSD)})
@@ -586,7 +603,10 @@ export default function IPDetailPage() {
                         return (
                             <div
                                 key={`${t.createdAt}-${idx}`}
-                                className={cn("flex items-center justify-between text-xs border-b border-border-subtle px-3 py-2 bg-background", idx === 0 ? "border-t" : "")}
+                                className={cn(
+                                    "flex items-center justify-between text-xs border-b border-border-subtle px-3 py-2 bg-background",
+                                    idx === 0 ? "border-t" : "",
+                                )}
                             >
                                 <div className="flex items-center gap-2">
                                     <span

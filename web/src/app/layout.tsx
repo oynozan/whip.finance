@@ -33,18 +33,18 @@ export default function RootLayout({
         <html lang="en">
             <body className={`${figtree.variable} ${ubuntuMono.variable} antialiased`}>
                 <Wrapper>
-                <div className="min-h-screen bg-background flex flex-col">
-            <Navigation />
+                    <div className="min-h-screen bg-background flex flex-col">
+                        <Navigation />
 
-            <div className="flex flex-1 overflow-hidden">
-                <Sidebar />
+                        <div className="flex flex-1 overflow-hidden">
+                            <Sidebar />
 
-                <main className="flex-1 overflow-hidden flex flex-col">
-                    {children}
-                    <Footer />
-                </main>
-            </div>
-        </div>
+                            <main className="flex-1 overflow-hidden flex flex-col">
+                                {children}
+                                <Footer />
+                            </main>
+                        </div>
+                    </div>
                 </Wrapper>
             </body>
         </html>

@@ -113,11 +113,7 @@ export default function Navigation() {
                     ) : (
                         <DynamicWidget
                             buttonContainerClassName="wallet-button"
-                            innerButtonComponent={
-                                <span>
-                                    Connect Wallet
-                                </span>
-                            }
+                            innerButtonComponent={<span>Connect Wallet</span>}
                         />
                     )}
                 </div>
@@ -134,9 +130,7 @@ function UserMenu() {
         address: walletAddress,
     });
 
-    const walletBalance = balanceData
-        ? formatUnits(balanceData.value, balanceData.decimals)
-        : "0";
+    const walletBalance = balanceData ? formatUnits(balanceData.value, balanceData.decimals) : "0";
 
     const userMenuItems = [
         { label: "Portfolio", href: "/portfolio" },

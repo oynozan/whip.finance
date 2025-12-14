@@ -17,28 +17,31 @@ export default function WatchlistPage() {
     const ipPriceUSD = usePriceDataStore(state => state.price);
 
     // Listen to global price updates for all tokens in watchlist
-    const handleIPUpdate = useCallback((data: {
-        ipId: string;
-        supply: number;
-        currentPrice: number;
-        reserve: number;
-        marketCap: number;
-    }) => {
-        try {
-            // Only update if token is in watchlist
-            if (watchlist[data.ipId]) {
-                console.log("💰 Watchlist: Updating pricing for", data.ipId);
-                updatePricing(data.ipId, {
-                    marketCap: data.marketCap,
-                    currentPrice: data.currentPrice,
-                    supply: data.supply,
-                    reserve: data.reserve,
-                });
+    const handleIPUpdate = useCallback(
+        (data: {
+            ipId: string;
+            supply: number;
+            currentPrice: number;
+            reserve: number;
+            marketCap: number;
+        }) => {
+            try {
+                // Only update if token is in watchlist
+                if (watchlist[data.ipId]) {
+                    console.log("💰 Watchlist: Updating pricing for", data.ipId);
+                    updatePricing(data.ipId, {
+                        marketCap: data.marketCap,
+                        currentPrice: data.currentPrice,
+                        supply: data.supply,
+                        reserve: data.reserve,
+                    });
+                }
+            } catch (error) {
+                console.error("Error handling ip-update:", error);
             }
-        } catch (error) {
-            console.error("Error handling ip-update:", error);
-        }
-    }, [watchlist, updatePricing]);
+        },
+        [watchlist, updatePricing],
+    );
 
     useEffect(() => {
         // Listen to global ip-update events
@@ -81,7 +84,7 @@ export default function WatchlistPage() {
                                 {tokens.map(token => {
                                     const marketCapUSD = (token.marketCap || 0) * (ipPriceUSD || 1);
                                     const priceUSD = (token.currentPrice || 0) * (ipPriceUSD || 1);
-                                    
+
                                     return (
                                         <tr
                                             key={token.id}
@@ -136,7 +139,7 @@ export default function WatchlistPage() {
                                             <td className="px-4 py-3 text-right">
                                                 <button
                                                     className="text-xs text-negative hover:underline"
-                                                    onClick={(e) => {
+                                                    onClick={e => {
                                                         e.preventDefault();
                                                         e.stopPropagation();
                                                         removeFromWatchlist(token.id);

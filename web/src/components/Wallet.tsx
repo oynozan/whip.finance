@@ -43,9 +43,7 @@ export default function WalletProviders({ children }: { children: React.ReactNod
         >
             <WagmiProvider config={config}>
                 <QueryClientProvider client={queryClient}>
-                    <DynamicWagmiConnector>
-                        {children}
-                    </DynamicWagmiConnector>
+                    <DynamicWagmiConnector>{children}</DynamicWagmiConnector>
                 </QueryClientProvider>
             </WagmiProvider>
         </DynamicContextProvider>
