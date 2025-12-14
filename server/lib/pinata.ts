@@ -4,7 +4,7 @@ import { PinataSDK } from "pinata";
 // Initialize Pinata SDK with JWT token
 const pinata = new PinataSDK({
     pinataJwt: process.env.PINATA_JWT_TOKEN!,
-    pinataGateway: "gateway.pinata.cloud",
+    pinataGateway: process.env.PINATA_GATEWAY?.replace("https://", "") || "http://gateway.pinata.cloud",
 });
 
 // Upload image file to Pinata IPFS

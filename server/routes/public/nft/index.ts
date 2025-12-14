@@ -23,7 +23,7 @@ router.post("/upload-metadata", upload.single("image"), async (req: Request, res
             type: imageFile.mimetype,
         });
         const imageIpfsHash = await uploadImageToIPFS(imageBlob);
-        const imageUrl = `https://gateway.pinata.cloud/ipfs/${imageIpfsHash}`;
+        const imageUrl = `${process.env.PINATA_GATEWAY}/ipfs/${imageIpfsHash}`;
 
         // Create NFT metadata object
         const nftMetadata = {
